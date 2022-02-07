@@ -13,6 +13,7 @@
 #include "glass/networktables/NTMecanumDrive.h"
 #include "glass/networktables/NTMechanism2D.h"
 #include "glass/networktables/NTPIDController.h"
+#include "glass/networktables/NTPhotonCamera.h"
 #include "glass/networktables/NTSpeedController.h"
 #include "glass/networktables/NTStringChooser.h"
 #include "glass/networktables/NTSubsystem.h"
@@ -129,6 +130,18 @@ void glass::AddStandardNetworkTablesViews(NetworkTablesProvider& provider) {
         win->SetPadding(0, 0);
         return std::make_unique<Mechanism2DView>(
             static_cast<NTMechanism2DModel*>(model));
+      });
+  provider.Register(
+      NTPhotonCameraViewModel::kType,
+      [](NT_Inst inst, const char* path) {
+        return std::make_unique<NTPhotonCameraViewModel>(inst, path);
+      },
+      [=](Window* win, Model* model, const char* path) {
+        win->SetDefaultPos(400, 400);
+        win->SetDefaultSize(200, 200);
+        win->SetPadding(0, 0);
+        return std::make_unique<PhotonCameraView>(
+            static_cast<NTPhotonCameraViewModel*>(model));
       });
   provider.Register(
       NTPIDControllerModel::kType,
